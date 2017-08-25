@@ -27,6 +27,8 @@ configure() ->
 read_app_config(Config) ->
     lists:map(fun ({AppVar, EnvVar, Opts0}) ->
                       Opts1 = case application:get_env(dogstatsd, AppVar) of
+                                  {ok, []} ->
+                                      Opts0;
                                   {ok, Value} ->
                                       lists:keystore(default, 1, Opts0, {default, Value});
                                   undefined ->
